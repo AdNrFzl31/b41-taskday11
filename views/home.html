@@ -35,17 +35,46 @@
           <li class="nav-item mx-lg-3 me-sm-3">
             <a class="nav-link active fw-bold" aria-current="page" href="/">Home</a>
           </li>
+          {{if .DataSession.IsLogin}}
           <li class="nav-item">
             <a class="nav-link" href="/addProject">Add Project</a>
           </li>
+          {{end}}
         </ul>
-        <a href="/contactMe">
-          <button class="btn btn-dark px-3 rounded-3" type="button">Contact Me</button>
-        </a>
+        <form class="d-flex">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center">
+            {{if .DataSession.IsLogin}}
+            <li class="nav-item">
+              <a class=" navbar-brand me-5 text-dark fw-bold">Hallo, {{.DataSession.UserName}}</a>
+            </li>
+            <li class="nav-item">
+              <a href="/logout" class="btn btn-dark  py-1 px-4">logout</a>
+            </li>
+            {{else}}
+            <li class="nav-item">
+              <a class="nav-link text-dark mx-1" href="/register">Register</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-dark mx-3" aria-current="page" href="/login">Login</a>
+            </li>
+            {{end}}
+            <li class="nav-item p-1">
+              <a href="/contactMe">
+                <button class="btn btn-dark px-3 mx-3" type="button">Contact Me</button>
+              </a>
+            </li>
+          </ul>
+        </form>
       </div>
     </div>
   </nav>
 
+  {{if .DataSession.FlashData}}
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>{{.DataSession.FlashData}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {{end}}
 
   <section>
     <div class="container my-5 p-5 bg-body rounded-3 shadow-sm">
@@ -126,7 +155,7 @@
           <div class="col-md-4 col-sm-6 col-12">
             <div class="card m-2 shadow">
               <div class="overflow-hidden rounded-top">
-                <img src="/public/image/4625702.jpg" class="card-img-top" alt="Project Image">
+                <img src="/public/image/{{$data.Image}}" class="card-img-top" alt="Project Image">
               </div>
               <div class="card-body">
                 <a href="/projectDetail/{{$data.Id}}" class="link-dark text-decoration-none">
@@ -140,7 +169,7 @@
                   {{if eq (index $data.Technologies 0) "react"}}
                   <i class="fa-brands fa-react fa-2xl ms-3"></i>
                   {{end}}
-                  
+
                   {{if eq (index $data.Technologies 1) "javascript"}}
                   <i class="fa-brands fa-square-js fa-2xl ms-3"></i>
                   {{end}}
@@ -155,8 +184,10 @@
                 </div>
                 <div class="container m-0 pt-3 text-center">
                   <div class="row justify-content-between">
+                    {{if $data.IsLogin}}
                     <a href="/editProject/{{$data.Id}}" class="btn btn-dark col-5" style="width: 47%;">Edit</a>
                     <a href="/deleteProject/{{$data.Id}}" class="btn btn-dark col-5" style="width: 47%;">Delete</a>
+                    {{end}}
                   </div>
                 </div>
               </div>
